@@ -1,35 +1,27 @@
- - name: lvCICD
-  # You may pin to the exact commit or the version.
-  id: lvEcho
-  # uses: LV-APT/lvCICD@de51d578c42fb3cd95f2f8571f15a0cb27a188d4
-  uses: LV-APT/lvCICD@v0.6
-  with:
-    # LabVIEW Version Used
-    LabVIEW_Version: # optional, default is 2019
-    # 32bit/64bit Version of LabVIEW Used
-    Architecture: # optional, default is x86
-    # Path Contains the Operation VIs
-    OperationVIFolder: # optional, default is 
-    # The operation of lvCICD
-    Operation: # optional, default is lvecho
-    # Parameter of lvCICD
-    Parameter1: # optional, default is 
-    # Parameter of lvCICD
-    Parameter2: # optional, default is 
-    # Parameter of lvCICD
-    Parameter3: # optional, default is 
-    # Parameter of lvCICD
-    Parameter4: # optional, default is 
-    # Parameter of lvCICD
-    Parameter5: # optional, default is 
-    # Parameter of lvCICD
-    Parameter6: # optional, default is 
-    # Parameter of lvCICD
-    Parameter7: # optional, default is 
-    # Parameter of lvCICD
-    Parameter8: # optional, default is 
-    # Parameter of lvCICD
-    Parameter9: # optional, default is 
-    # Parameter of lvCICD
-    Parameter10: # optional, default is 
-          
+name: LabVIEW Project Tests
+
+# Controls when the workflow will run
+on: [push,workflow_dispatch]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  lvCICD:
+    # The type of runner that the job will run on
+    name: lvCICD LabVIEW Project Tests
+    runs-on: [self-hosted]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: CloneRepo
+        uses: actions/checkout@v3
+
+      - name: echo GITHUB_WORKSPACE
+        run: echo ${{ github.workspace }}
+        shell: powershell
+
+      - name: Run lvCICD Test cases with VITester
+        uses: LV-APT/lvCICD@main
+        with:
+          Operation: StartVITester
+          Parameter1: ${{ github.workspace }}\LabVIEW-Adapter\CICD-LabVIEW-Adapter.lvproj
